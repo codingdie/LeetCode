@@ -8,26 +8,7 @@ import java.util.PriorityQueue;
 /**
  * Created by xupeng on 2017/6/30.
  */
-public class Solution {
-    public static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-
-        void print() {
-            ListNode t = this;
-            StringBuffer stringBuffer = new StringBuffer();
-            while (t != null) {
-                stringBuffer.append(t.val + ",");
-                t = t.next;
-            }
-            System.out.println(stringBuffer.substring(0, stringBuffer.length() - 1));
-        }
-    }
-
+public class Solutions {
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
         ListNode cur1 = l1, cur2 = l2, curnew = null, newlist = null;
@@ -280,7 +261,6 @@ public class Solution {
 
     }
 
-
     public static String intToRoman(int num) {
         char[][] arr = {
                 {'I', 'V'},
@@ -399,52 +379,6 @@ public class Solution {
         return lists;
     }
 
-    public int threeSumClosest(int[] nums, int target) {
-        List<List<Integer>> lists = new ArrayList<>();
-        if (nums == null || nums.length < 3) {
-            return 0;
-        }
-        Arrays.sort(nums);
-        int result = nums[0] + nums[1] + nums[2] - target;
-        for (int i = 0; i < nums.length; i++) {
-            if (i - 1 >= 0 && nums[i - 1] == nums[i]) {
-                continue;
-            }
-            int j = i + 1;
-            int k = nums.length - 1;
-            while (j < k) {
-                int total = nums[j] + nums[k] + nums[i];
-                int numk = nums[k];
-                int numj = nums[j];
-                int cur = total - target;
-
-                if (cur == 0) {
-                    return target;
-                } else {
-                    int curAbs = Math.abs(cur);
-                    int resultAbs = Math.abs(result);
-                    if (curAbs < resultAbs) {
-                        result = cur;
-                    }
-
-                    if (cur < 0) {
-                        while (++j < k && nums[j] == numj) {
-
-                        }
-                    } else {
-                        while (--k > j && nums[k] == numk) {
-
-                        }
-                    }
-                }
-
-            }
-
-        }
-        return result + target;
-    }
-
-
     public static List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
         char[][] chars = {
@@ -477,7 +411,6 @@ public class Solution {
         return result;
 
     }
-
 
     public static List<List<Integer>> fourSum(int[] nums, int target) {
 
@@ -537,7 +470,6 @@ public class Solution {
         }
         return lists;
     }
-
 
     public static boolean isValid(String s) {
         char[] stack = new char[s.length()];
@@ -893,9 +825,7 @@ public class Solution {
         return -1;
     }
 
-
     public static int longestValidParentheses(String s) {
-
         char[] str = s.toCharArray();
         char[] stack = new char[s.length() / 2];
         int index = -1;
@@ -913,7 +843,6 @@ public class Solution {
                     }
                     stack[++index] = ch;
                 }
-
                 if (ch == ')') {
                     if (index == -1) {
                         break;
@@ -940,6 +869,335 @@ public class Solution {
         }
         return max * 2;
     }
+
+    public static int divide(int dividend, int divisor) {
+        if (dividend == 0) {
+            return 0;
+        }
+        if (divisor == 0) {
+            return Integer.MAX_VALUE;
+        }
+        long a = Math.abs((long) dividend);
+        long b = Math.abs((long) divisor);
+        if (a < b) {
+            return 0;
+        }
+        int k = 0;
+        long res = 1;
+        while (true) {
+            if ((b << (k + 1)) > a) {
+                break;
+            }
+            res = res << 1;
+
+
+            k++;
+        }
+        long l = a - (b << k);
+        if (l >= b) {
+            res += divide((int) l, (int) b);
+        }
+
+        if ((dividend ^ divisor) >> 31 == 0) {
+            return res > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) res;
+        } else {
+            return (int) (-res);
+        }
+
+    }
+
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> lists = new ArrayList<>();
+        List<Integer> integers = new ArrayList<>();
+
+        combinationSumR(candidates, target, 0, integers, lists);
+
+        return lists;
+    }
+
+    public static void combinationSumR(int[] candidates, int target, int i, List<Integer> cur, List<List<Integer>> lists) {
+
+        if (target == 0) {
+            List<Integer> integers = new ArrayList<>();
+            integers.addAll(cur);
+            lists.add(integers);
+            return;
+        }
+
+        for (; i < candidates.length && candidates[i] <= target; i++) {
+            if (i > 0 && candidates[i - 1] == candidates[i]) continue;
+            cur.add(candidates[i]);
+            combinationSumR(candidates, target - candidates[i], i + 1, cur, lists);
+            cur.remove(cur.size() - 1);
+        }
+    }
+
+    public static List<List<Integer>> permute(int[] nums) {
+
+        List<List<Integer>> lists = new ArrayList<>();
+        if (nums == null || nums.length == 0)
+            return lists;
+        permute(nums, 0, lists);
+        return lists;
+    }
+
+    public static void permute(int[] nums, int i, List<List<Integer>> res) {
+        if (i >= nums.length - 1) {
+            List list = new ArrayList();
+            for (int n : nums) {
+                list.add(n);
+            }
+            res.add(list);
+            return;
+        }
+        int j = i;
+        for (; i < nums.length; i++) {
+            int tmp = nums[i];
+            if (i > j) {
+                nums[i] = nums[j];
+                nums[j] = tmp;
+            }
+            permute(nums, j + 1, res);
+            if (i > j) {
+                nums[j] = nums[i];
+
+                nums[i] = tmp;
+            }
+        }
+    }
+
+    public static List<List<Integer>> permuteUnique(int[] nums) {
+
+        Arrays.sort(nums);
+        boolean[] used = new boolean[nums.length];
+        List<List<Integer>> lists = new ArrayList<>();
+        List<Integer> integers = new ArrayList<>();
+        if (nums == null || nums.length == 0)
+            return lists;
+        permuteUnique(nums, used, integers, lists);
+        return lists;
+    }
+
+    public static void permuteUnique(int[] nums, boolean[] used, List<Integer> cur, List<List<Integer>> res) {
+        if (cur.size() == nums.length) {
+            List list = new ArrayList(cur);
+
+            res.add(list);
+            return;
+        }
+        int last = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i] == false) {
+                if (last != -1 && nums[last] == nums[i]) continue;
+                cur.add(nums[i]);
+                used[i] = true;
+                permuteUnique(nums, used, cur, res);
+                used[i] = false;
+                cur.remove(cur.size() - 1);
+                last = i;
+            }
+
+        }
+    }
+
+    public static double myPow(double x, int n) {
+        if (n == 0) {
+            return 1;
+        }
+        double v = 1;
+        for (long i = 0; i < Math.abs((long) n); i++) {
+            double tmp = v * x;
+            if (tmp > Double.MAX_VALUE) {
+                if (n > 0) {
+                    return Double.MAX_VALUE;
+                } else {
+                    return 0;
+                }
+            }
+            if (Math.abs(v) == Math.abs(tmp)) {
+                return v;
+            }
+            v = tmp;
+            if (v == 0) {
+                return 0;
+            }
+        }
+        return (n > 0 ? v : 1 / v);
+    }
+
+    public static String multiply(String num1, String num2) {
+
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+        int length1 = num1.length();
+        int length2 = num2.length();
+        int z1 = 0, z2 = 0;
+        StringBuffer zero = new StringBuffer();
+        for (int i = length1 - 1; i >= 0; i--) {
+            if (num1.charAt(i) == '0') {
+                z1++;
+                zero.append('0');
+            } else {
+                break;
+            }
+        }
+        for (int i = length2 - 1; i >= 0; i--) {
+            if (num2.charAt(i) == '0') {
+                zero.append('0');
+                z2++;
+            } else {
+                break;
+            }
+        }
+        List<String> integers = new ArrayList<String>();
+        int jl = length2 - z2;
+        int il = length1 - z1;
+        for (int j = jl - 1; j >= 0; j--) {
+            char chj = num2.charAt(j);
+            int jn = (chj - 48);
+
+            char[] chars = new char[length1 - z1 + 1];
+            StringBuffer stringBuffer = new StringBuffer();
+            int res = 0;
+            for (int i = il - 1; i >= 0; i--) {
+                char chi = num1.charAt(i);
+                int in = (chi - 48);
+
+                int result = in * jn + res;
+
+                stringBuffer.append(result % 10);
+                res = result / 10;
+            }
+
+            if (res != 0) {
+                stringBuffer.append(res);
+            }
+            integers.add(stringBuffer.toString());
+
+        }
+        int k = 0;
+        StringBuffer stringBuffer = new StringBuffer();
+        int res = 0;
+
+        int size = integers.size();
+        int minSize = size - 1 + integers.get(size - 1).length();
+
+        for (int m = 0; m < minSize; m++) {
+            int total = 0;
+
+            for (int i = 0; i < integers.size(); i++) {
+                String str = integers.get(i);
+                int j = m - i;
+                if (j >= 0 && j < str.length()) {
+                    int i1 = str.charAt(j) - 48;
+                    total += i1;
+                }
+            }
+
+            System.out.println(total);
+            total += res;
+            stringBuffer.append(total % 10);
+
+            res = total / 10;
+        }
+        if (res > 0) {
+            stringBuffer.append(res);
+        }
+        return stringBuffer.reverse().append(zero).toString();
+    }
+
+    public static int trap(int[] height) {
+        return 0;
+    }
+
+    public static void main(String args[]) {
+
+        System.out.println(multiply("6", "501"));
+    }
+
+    public static ListNode buildList(int[] arry) {
+        ListNode listNode = null, tmp = null;
+        for (int value : arry) {
+            if (listNode == null) {
+                listNode = new ListNode(value);
+                tmp = listNode;
+            } else {
+                tmp.next = new ListNode(value);
+                tmp = tmp.next;
+            }
+        }
+        return listNode;
+    }
+
+    public int threeSumClosest(int[] nums, int target) {
+        List<List<Integer>> lists = new ArrayList<>();
+        if (nums == null || nums.length < 3) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int result = nums[0] + nums[1] + nums[2] - target;
+        for (int i = 0; i < nums.length; i++) {
+            if (i - 1 >= 0 && nums[i - 1] == nums[i]) {
+                continue;
+            }
+            int j = i + 1;
+            int k = nums.length - 1;
+            while (j < k) {
+                int total = nums[j] + nums[k] + nums[i];
+                int numk = nums[k];
+                int numj = nums[j];
+                int cur = total - target;
+
+                if (cur == 0) {
+                    return target;
+                } else {
+                    int curAbs = Math.abs(cur);
+                    int resultAbs = Math.abs(result);
+                    if (curAbs < resultAbs) {
+                        result = cur;
+                    }
+
+                    if (cur < 0) {
+                        while (++j < k && nums[j] == numj) {
+
+                        }
+                    } else {
+                        while (--k > j && nums[k] == numk) {
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+        return result + target;
+    }
+
+    //    public void nextPermutation(int[] nums) {
+//       int i=0;
+//
+//    }
+//    public static String countAndSay(int n) {
+//        if (n == 1) {
+//            return "1";
+//        }
+//        String s = countAndSay(n - 1);
+//        int k = 0;
+//        StringBuffer stringBuffer = new StringBuffer();
+//        for (int i = 0; i < s.length(); i++) {
+//            k++;
+//            if (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
+//                continue;
+//            } else {
+//                stringBuffer.append(k).append(s.charAt(i));
+//                k = 0;
+//            }
+//        }
+//        return stringBuffer.toString();
+//    }
 
     public int search(int[] nums, int target) {
         if (nums.length == 0) return -1;
@@ -1082,67 +1340,64 @@ public class Solution {
         return true;
     }
 
-    public static int divide(int dividend, int divisor) {
-        if (dividend == 0) {
-            return 0;
+    public String longestPalindrome(String s) {
+        if (s.isEmpty()) return "";
+        if (s.length() == 1) return s;
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("#");
+        for (char ch : s.toCharArray()) {
+            stringBuffer.append(ch).append("#");
         }
-        if (divisor == 0) {
-            return Integer.MAX_VALUE;
-        }
-        long a = Math.abs((long) dividend);
-        long b = Math.abs((long) divisor);
-        if (a < b) {
-            return 0;
-        }
-        int k = 0;
-        long res = 1;
-        while (true) {
-            if ((b << (k + 1)) > a) {
-                break;
+        s = stringBuffer.toString();
+        int length = s.length();
+        int[] table = new int[length];
+        int maxRight = 0, pos = 0, max = 1, maxpos = 0;
+        char maxCh = '#';
+        for (int i = 0; i < length && maxRight < length - 1; i++) {
+            int j = 2 * pos - i;
+            if (i < maxRight) {
+                if (table[j] < maxRight - i) {
+                    table[i] = table[j];
+                } else {
+                    int k = maxRight - i;
+                    int m = i - (k), n = i + (k);
+                    while (--m >= 0 && ++n < length && s.charAt(m) == s.charAt(n)) {
+                        k++;
+                    }
+                    table[i] = k;
+                    maxRight = i + k - 1;
+                    pos = i;
+                    if (k > max || (k == max && s.charAt(i) != '#' && maxCh == '#')) {
+                        max = k;
+                        maxpos = i;
+                        maxCh = s.charAt(i);
+                    }
+                }
+            } else {
+                int m = i, n = i;
+                int k = 1;
+                while (--m >= 0 && ++n < length && s.charAt(m) == s.charAt(n)) {
+                    k++;
+                }
+                table[i] = k;
+                maxRight = i + k - 1;
+                pos = i;
+                if (k > max || (k == max && s.charAt(i) != '#' && maxCh == '#')) {
+                    max = k;
+                    maxpos = i;
+                    maxCh = s.charAt(i);
+                }
             }
-            res = res << 1;
 
-
-            k++;
         }
-        long l = a - (b << k);
-        if (l >= b) {
-            res += divide((int) l, (int) b);
+        StringBuffer resultBuffer = new StringBuffer();
+        for (int i = maxpos - max + 1; i < maxpos + max; i++) {
+            char charAt = stringBuffer.charAt(i);
+            if (charAt != '#') {
+                resultBuffer.append(charAt);
+            }
         }
-
-        if ((dividend ^ divisor) >> 31 == 0) {
-            return res > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) res;
-        } else {
-            return (int) (-res);
-        }
-
-    }
-
-    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        List<List<Integer>> lists = new ArrayList<>();
-        List<Integer> integers = new ArrayList<>();
-
-        combinationSumR(candidates, target, 0, integers, lists);
-
-        return lists;
-    }
-
-    public static void combinationSumR(int[] candidates, int target, int i, List<Integer> cur, List<List<Integer>> lists) {
-
-        if (target == 0) {
-            List<Integer> integers = new ArrayList<>();
-            integers.addAll(cur);
-            lists.add(integers);
-            return;
-        }
-
-        for (; i < candidates.length && candidates[i] <= target; i++) {
-            if (i > 0 && candidates[i - 1] == candidates[i]) continue;
-            cur.add(candidates[i]);
-            combinationSumR(candidates, target - candidates[i], i + 1, cur, lists);
-            cur.remove(cur.size() - 1);
-        }
+        return resultBuffer.toString();
     }
 
     public int maxSubArray(int[] nums) {
@@ -1164,225 +1419,22 @@ public class Solution {
         return max;
     }
 
-    public static List<List<Integer>> permute(int[] nums) {
+    public static class ListNode {
+        int val;
+        ListNode next;
 
-        List<List<Integer>> lists = new ArrayList<>();
-        if (nums == null || nums.length == 0)
-            return lists;
-        permute(nums, 0, lists);
-        return lists;
-    }
-
-    public static void permute(int[] nums, int i, List<List<Integer>> res) {
-        if (i >= nums.length - 1) {
-            List list = new ArrayList();
-            for (int n : nums) {
-                list.add(n);
-            }
-            res.add(list);
-            return;
+        ListNode(int x) {
+            val = x;
         }
-        int j = i;
-        for (; i < nums.length; i++) {
-            int tmp = nums[i];
-            if (i > j) {
-                nums[i] = nums[j];
-                nums[j] = tmp;
-            }
-            permute(nums, j + 1, res);
-            if (i > j) {
-                nums[j] = nums[i];
 
-                nums[i] = tmp;
-            }
-        }
-    }
-
-    //    public void nextPermutation(int[] nums) {
-//       int i=0;
-//
-//    }
-//    public static String countAndSay(int n) {
-//        if (n == 1) {
-//            return "1";
-//        }
-//        String s = countAndSay(n - 1);
-//        int k = 0;
-//        StringBuffer stringBuffer = new StringBuffer();
-//        for (int i = 0; i < s.length(); i++) {
-//            k++;
-//            if (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
-//                continue;
-//            } else {
-//                stringBuffer.append(k).append(s.charAt(i));
-//                k = 0;
-//            }
-//        }
-//        return stringBuffer.toString();
-//    }
-
-    public static List<List<Integer>> permuteUnique(int[] nums) {
-
-        Arrays.sort(nums);
-        boolean[] used = new boolean[nums.length];
-        List<List<Integer>> lists = new ArrayList<>();
-        List<Integer> integers = new ArrayList<>();
-        if (nums == null || nums.length == 0)
-            return lists;
-        permuteUnique(nums, used, integers, lists);
-        return lists;
-    }
-
-    public static void permuteUnique(int[] nums, boolean[] used, List<Integer> cur, List<List<Integer>> res) {
-        if (cur.size() == nums.length) {
-            List list = new ArrayList(cur);
-
-            res.add(list);
-            return;
-        }
-        int last = -1;
-        for (int i = 0; i < nums.length; i++) {
-            if (used[i] == false) {
-                if (last != -1 && nums[last] == nums[i]) continue;
-                cur.add(nums[i]);
-                used[i] = true;
-                permuteUnique(nums, used, cur, res);
-                used[i] = false;
-                cur.remove(cur.size() - 1);
-                last = i;
-            }
-
-        }
-    }
-
-    public static double myPow(double x, int n) {
-        if (n == 0) {
-            return 1;
-        }
-        double v = 1;
-        for (long i = 0; i < Math.abs((long) n); i++) {
-            double tmp = v * x;
-            if (tmp > Double.MAX_VALUE) {
-                if (n > 0) {
-                    return Double.MAX_VALUE;
-                } else {
-                    return 0;
-                }
-            }
-            if (Math.abs(v) == Math.abs(tmp)) {
-                return v;
-            }
-            v = tmp;
-            if (v == 0) {
-                return 0;
-            }
-        }
-        return (n > 0 ? v : 1 / v);
-    }
-
-    public static String multiply(String num1, String num2) {
-
-        if(num1.equals("0")||num2.equals("0")){
-            return "0";
-        }
-        int length1 = num1.length();
-        int length2 = num2.length();
-        int z1 = 0, z2 = 0;
-        StringBuffer zero = new StringBuffer();
-        for (int i = length1 - 1; i >= 0; i--) {
-            if (num1.charAt(i) == '0') {
-                z1++;
-                zero.append('0');
-            } else {
-                break;
-            }
-        }
-        for (int i = length2 - 1; i >= 0; i--) {
-            if (num2.charAt(i) == '0') {
-                zero.append('0');
-                z2++;
-            } else {
-                break;
-            }
-        }
-        List<String> integers = new ArrayList<String>();
-        int jl = length2 - z2;
-        int il = length1 - z1;
-        for (int j = jl - 1; j >= 0; j--) {
-            char chj = num2.charAt(j);
-            int jn = (chj - 48);
-
-            char[] chars = new char[length1 - z1 + 1];
+        void print() {
+            ListNode t = this;
             StringBuffer stringBuffer = new StringBuffer();
-            int res = 0;
-            for (int i = il - 1; i >= 0; i--) {
-                char chi = num1.charAt(i);
-                int in = (chi - 48);
-
-                int result = in * jn + res;
-
-                stringBuffer.append(result % 10);
-                res = result / 10;
+            while (t != null) {
+                stringBuffer.append(t.val + ",");
+                t = t.next;
             }
-
-            if (res != 0) {
-                stringBuffer.append(res);
-            }
-            integers.add(stringBuffer.toString());
-
+            System.out.println(stringBuffer.substring(0, stringBuffer.length() - 1));
         }
-        int k = 0;
-        StringBuffer stringBuffer = new StringBuffer();
-        int res = 0;
-
-        int size = integers.size();
-        int minSize = size - 1 + integers.get(size - 1).length();
-
-        for (int m = 0; m < minSize; m++) {
-            int total = 0;
-
-            for (int i = 0; i < integers.size(); i++) {
-                String str = integers.get(i);
-                int j = m - i;
-                if (j >= 0&&j<str.length()) {
-                    int i1 = str.charAt(j) - 48;
-                    total += i1;
-                }
-            }
-
-            System.out.println(total);
-            total += res;
-            stringBuffer.append(total % 10);
-
-            res = total / 10;
-        }
-        if (res > 0) {
-            stringBuffer.append(res);
-        }
-        return stringBuffer.reverse().append(zero).toString();
-    }
-
-    public static int trap(int[] height) {
-        return 0;
-    }
-
-    public static void main(String args[]) {
-
-        System.out.println(multiply("6", "501"));
-    }
-
-
-    public static ListNode buildList(int[] arry) {
-        ListNode listNode = null, tmp = null;
-        for (int value : arry) {
-            if (listNode == null) {
-                listNode = new ListNode(value);
-                tmp = listNode;
-            } else {
-                tmp.next = new ListNode(value);
-                tmp = tmp.next;
-            }
-        }
-        return listNode;
     }
 }
