@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class UniqueBinarySearchTreesII {
     public static void main(String[] args) {
-        System.out.println(new UniqueBinarySearchTreesII().generateTrees(3).size());
+        System.out.println(new UniqueBinarySearchTreesII().generateTrees(5).size());
 
     }
 
