@@ -11,12 +11,16 @@ public class RandomListNode {
         this.label = x;
     }
     void print() {
-        RandomListNode t = this;
+        RandomListNode t=this;
         StringBuffer stringBuffer = new StringBuffer();
         while (t != null) {
-            stringBuffer.append(t.label +":"+random.label+ ",");
+            stringBuffer.append(t.label);
+            if(t.random!=null){
+                stringBuffer.append(":"+t.random.label);
+            }
+            stringBuffer.append("\t");
             t = t.next;
         }
-        System.out.println(stringBuffer.substring(0, stringBuffer.length() - 1));
+        System.out.println(stringBuffer.toString());
     }
 }

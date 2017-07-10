@@ -1,5 +1,8 @@
 package com.codingdie.leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by xupen on 2017/7/7.
  */
@@ -8,54 +11,54 @@ public class CopyListwithRandomPointer {
 
     public static void main(String[] args) {
         RandomListNode node1 = new RandomListNode(-1);
-        node1.random=node1;
+        RandomListNode node2 = new RandomListNode(-2);
+        RandomListNode node3 = new RandomListNode(-3);
+        node1.next=node2;
+        node2.next=node3;
         new CopyListwithRandomPointer().copyRandomList(node1).print();
 
     }
+
     public RandomListNode copyRandomList(RandomListNode head) {
-        if(head==null)return null;
-        RandomListNode result = null;
-        RandomListNode resultPtr = null;
+        if (head == null) return null;
         RandomListNode ptr = head;
-
+        RandomListNode result = null;
         while (ptr != null) {
-            RandomListNode randomListNode = new RandomListNode(ptr.label);
-
-            if(result==null) {
-                resultPtr=randomListNode;
-                result=randomListNode;
-            }else{
-                resultPtr.next = randomListNode;
-                resultPtr = result.next;
+            RandomListNode newnode = new RandomListNode(ptr.label);
+            if (result == null) {
+                result = newnode;
             }
-            ptr = ptr.next;
+            newnode.next = ptr.next;
+            ptr.next = newnode;
+            ptr=newnode.next;
+        }
+        RandomListNode resultPtr = result;
+        ptr=head;
+        while (ptr!=null){
+            if(ptr.random!=null){
+                resultPtr.random=ptr.random.next;
+            }else{
+                resultPtr.random=null;
+            }
+            ptr=resultPtr.next;
+            if(ptr!=null){
+                resultPtr=ptr.next;
+            }
         }
         resultPtr = result;
-        ptr = head;
-        while (resultPtr != null) {
-            if (ptr.random != null) {
-                resultPtr.random=findRandom(ptr.random,head,result);
+        ptr=head;
+        while (ptr!=null){
+            ptr.next=resultPtr.next;
+            ptr=ptr.next;
+            if(ptr!=null){
+                resultPtr.next=ptr.next;
+                resultPtr=resultPtr.next;
             }
-            resultPtr = resultPtr.next;
-            ptr = ptr.next;
-
         }
         return result;
     }
 
-    public RandomListNode findRandom(RandomListNode obj, RandomListNode head, RandomListNode headcopy) {
-        if(obj==null)return null;
-        RandomListNode headptr=head;
-        RandomListNode headcopyptr=headcopy;
-        while (headptr!=null){
-            System.out.println(head.label+":"+headcopy.label);
-            if(head==obj){
-                return headcopyptr;
-            }
-            headptr=headptr.next;
-            headcopy=headcopy.next;
-        }
-        return null;
-    }
+
+
 
 }
