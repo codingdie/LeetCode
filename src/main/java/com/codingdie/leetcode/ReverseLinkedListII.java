@@ -46,23 +46,6 @@ public class ReverseLinkedListII {
             return  head;
         }
     }
-    public static class  ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-        void print() {
-            ListNode t = this;
-            StringBuffer stringBuffer = new StringBuffer();
-            while (t != null) {
-                stringBuffer.append(t.val + ",");
-                t = t.next;
-            }
-            System.out.println(stringBuffer.substring(0, stringBuffer.length() - 1));
-        }
-    }
 
     public static void main(String[] args) {
         ListNode node1=new ListNode(1);
