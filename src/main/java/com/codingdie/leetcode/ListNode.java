@@ -1,5 +1,7 @@
 package com.codingdie.leetcode;
 
+import java.util.Random;
+
 /**
  * Created by xupen on 2017/7/10.
  */
@@ -15,7 +17,7 @@ public class ListNode {
         ListNode result = null;
         ListNode ptr = null;
         for (int i = 0; i < total; i++) {
-            ListNode node1 = new ListNode(i + 1);
+            ListNode node1 = new ListNode(Math.abs(new Random().nextInt(total)));
             if (result == null) result = node1;
             else ptr.next = node1;
             ptr = node1;

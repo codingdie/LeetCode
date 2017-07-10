@@ -510,40 +510,6 @@ public class Solutions {
         return index == -1;
     }
 
-    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-
-        ListNode l11 = l1, l22 = l2;
-        ListNode result = null, resultp = null;
-        while (l11 != null || l22 != null) {
-            int value = 0;
-            if (l11 == null) {
-                value = l22.val;
-                l22 = l22.next;
-            } else if (l22 == null) {
-                value = l11.val;
-                l11 = l11.next;
-            } else {
-                int i = l11.val, j = l22.val;
-                value = i > j ? j : i;
-                if (i > j) {
-                    l22 = l22.next;
-                } else {
-                    l11 = l11.next;
-                }
-            }
-            ListNode listNode = new ListNode(value);
-            if (result == null) {
-                result = listNode;
-                resultp = result;
-            } else {
-                resultp.next = listNode;
-                resultp = resultp.next;
-            }
-
-
-        }
-        return result;
-    }
 
     public static List<String> generateParenthesis(int n) {
 
@@ -606,26 +572,26 @@ public class Solutions {
         return head;
     }
 
-    public static ListNode mergeKLists1(ListNode[] lists) {
-        if (lists.length == 0) {
-            return null;
-        }
-        return mergeKListsStep1(lists, 0, lists.length - 1);
-    }
+//    public static ListNode mergeKLists1(ListNode[] lists) {
+//        if (lists.length == 0) {
+//            return null;
+//        }
+//        return mergeKListsStep1(lists, 0, lists.length - 1);
+//    }
 
-    public static ListNode mergeKListsStep1(ListNode[] lists, int i, int j) {
-        if (i < j) {
-            if (j - i == 0) {
-                return mergeTwoLists(lists[i], lists[j]);
-            }
-            int k = (i + j) / 2;
-
-            return mergeTwoLists(mergeKListsStep1(lists, i, k), mergeKListsStep1(lists, k + 1, j));
-        } else {
-            return lists[i];
-        }
-
-    }
+//    public static ListNode mergeKListsStep1(ListNode[] lists, int i, int j) {
+//        if (i < j) {
+//            if (j - i == 0) {
+//                return mergeTwoLists(lists[i], lists[j]);
+//            }
+//            int k = (i + j) / 2;
+//
+//            return mergeTwoLists(mergeKListsStep1(lists, i, k), mergeKListsStep1(lists, k + 1, j));
+//        } else {
+//            return lists[i];
+//        }
+//
+//    }
 
     public static int removeDuplicates(int[] nums) {
         if (nums.length <= 1) {
