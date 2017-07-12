@@ -11,7 +11,10 @@ public class MinimumSizeSubarraySum {
         int i = 0;
         int total = 0;
         for (; i < nums.length; i++) {
-            if (i > 0) total -= nums[i - 1];
+            if (i > 0) {
+                if (total < s) break;
+                total -= nums[i - 1];
+            }
             if (total >= s) {
                 min = Math.min(min, j - i + 1);
                 continue;
