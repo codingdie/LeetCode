@@ -13,6 +13,19 @@ public class RegularExpressionMatching {
         return isMatch(s, p, 0, 0);
     }
 
+    public boolean isMatch2(String s, String p) {
+        boolean[][] res = new boolean[s.length()][p.length()];
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 0; j < s.length(); j++) {
+                if (j + 1 < p.length() && p.charAt(j + 1) == '*') {
+
+                } else {
+                    res[i][j] = res[i - 1][j - 1] && (p.charAt(0) == '.' || p.charAt(0) == s.charAt(0));
+                }
+            }
+        }
+    }
+
     public boolean isMatch(String s, String p, int i, int j) {
         if (j >= p.length() && i >= s.length()) return true;
         if (i < s.length() && j >= p.length()) return false;
