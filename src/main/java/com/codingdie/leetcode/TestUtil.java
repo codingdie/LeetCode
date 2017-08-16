@@ -37,9 +37,21 @@ public class TestUtil {
         System.out.println();
 
     }
+
     public  static  void printArray(int[] chars){
-        for(int i=0;i<chars.length;i++){
+        for(int i = 0; i<chars.length; i++){
             System.out.print(chars[i]+"  ");
+        }
+        System.out.println();
+
+    }
+
+    public static void printArray(boolean[][] chars) {
+        for (int i = 0; i < chars.length; i++) {
+            for (int j = 0; j < chars[i].length; j++) {
+                System.out.print((chars[i][j] == true ? "1" : "0") + "  ");
+            }
+            System.out.println();
         }
         System.out.println();
 
