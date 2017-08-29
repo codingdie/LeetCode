@@ -8,7 +8,7 @@ import com.codingdie.leetcode.TestUtil;
 public class RegularExpressionMatching {
     public static void main(String[] args) {
         RegularExpressionMatching regularExpressionMatching = new RegularExpressionMatching();
-        System.out.println(regularExpressionMatching.isMatch2("aab", "b.*"));
+        System.out.println(regularExpressionMatching.isMatch2("aaa", ".*"));
 
     }
 
@@ -65,25 +65,16 @@ public class RegularExpressionMatching {
         }
         for (int i = 0; i < p.length(); i++) {
             if (p.charAt(i) == '*') {
-                if (p.charAt(i - 1) == '.') {
-                    for (int j = 0; j < s.length(); j++) {
+                for (int j = 0; j < s.length(); j++) {
+                    if (i > 0 && res[i - 1][j + 1] == true) {
                         res[i + 1][j + 1] = true;
-                        if (i > 0)
-                            res[i + 1][j + 1] = res[i - 1][1];
-
+                        continue;
                     }
-                } else {
-                    for (int j = 0; j < s.length(); j++) {
-                        if (i > 0 && res[i - 1][j + 1] == true) {
-                            res[i + 1][j + 1] = true;
-                            continue;
-                        }
-                        if (res[i][j + 1] == true) {
-                            res[i + 1][j + 1] = true;
-                            continue;
-                        }
-                        res[i + 1][j + 1] = p.charAt(i - 1) == s.charAt(j) && res[i][j];
+                    if (res[i][j + 1] == true) {
+                        res[i + 1][j + 1] = true;
+                        continue;
                     }
+                    res[i + 1][j + 1] = (p.charAt(i - 1) == s.charAt(j) || p.charAt(i - 1) == '.') && res[i][j];
                 }
             } else {
                 for (int j = 0; j < s.length(); j++) {
@@ -91,7 +82,6 @@ public class RegularExpressionMatching {
                 }
             }
         }
-        TestUtil.printArray(res);
         return res[p.length()][s.length()];
     }
 
