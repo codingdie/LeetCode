@@ -1,13 +1,11 @@
 package com.codingdie.leetcode.hard;
 
-import java.util.Stack;
-
 /**
  * Created by xupeng on 17-8-29.
  */
 public class LongestValidParentheses {
     public static void main(String[] args) {
-        new LongestValidParentheses().longestValidParentheses("()()");
+        System.out.println(new LongestValidParentheses().longestValidParentheses("(()))()"));
     }
 
     public int longestValidParentheses(String s) {
@@ -15,25 +13,28 @@ public class LongestValidParentheses {
         if (chars.length == 0) {
             return 0;
         }
-        Stack<Character> stack = new Stack<>();
-        Stack<Integer> indexStack = new Stack<>();
-
+        int[] stack = new int[chars.length];
+        int t = -1;
+        int start = 0;
         int max = 0;
         for (int i = 0; i < chars.length; i++) {
             char ch = chars[i];
             if (ch == '(') {
-                stack.push(ch);
-                indexStack.push(i);
+                stack[++t] = i;
             } else if (ch == ')') {
-                if (stack.size() != 0 && stack.peek() == '(') {
-                    stack.pop();
-                    indexStack.pop();
+                if (t == -1) {
+                    start = i + 1;
                 } else {
-                    indexStack.push(i);
+                    t--;
+                    if (t == -1) {
+                        max = Math.max(max, i - start + 1);
+                    } else {
+                        max = Math.max(max, i - stack[t]);
+                    }
                 }
             } else {
-
-                indexStack.push(i);
+                t = -1;
+                start = i + 1;
             }
         }
         return max;
